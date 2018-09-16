@@ -1,13 +1,12 @@
-package structure;
+package Structure;
 
-public class DoubleLinkedList<L> {
+public class DoubleLinkedList<L>{
 
-    //Crea los atributos
     private DoubleLinkedNode<L> head;
     private DoubleLinkedNode<L> tail;
     private int size;
 
-    // Crea los getters and setters para los atributos
+    // SE GENERAN LOS GETTERS AND SETTER
     public DoubleLinkedNode<L> getHead() {
         return head;
     }
@@ -36,52 +35,40 @@ public class DoubleLinkedList<L> {
         return size == 0;
     }
 
-    // inserta datos al final de la lista
-    public void insert(L element) {
+
+    public void insert(L elemento) {
         if (isEmpty()) {
-            head = new DoubleLinkedNode(element);
+            head = new DoubleLinkedNode<>(elemento);
             tail = head;
             size++;
         } else {
-            tail.setNext(new DoubleLinkedNode(element));
+            tail.setNext(new DoubleLinkedNode<>(elemento));
             tail.getNext().setPrev(tail);
             tail = tail.getNext();
             size++;
         }
     }
 
-    //permite consultar el elemnto del nodo consultado 
-    public L consult(L element) {
+    public L consult(L elemento) {
         DoubleLinkedNode<L> temp = head;
         for (int i = 0; i < size; i++) {
-            if (temp.getElement() == element) {
+            if (temp.getElement() == elemento) {
                 break;
-            } else {
+            }
+            else {
                 temp = temp.getNext();
             }
         }
-        return temp.getElement();
+        return temp.getElemento();
     }
 
-    //actualiza los elementos de los nodos
-    public void update(L initialElem, L replacedElem) {
-        DoubleLinkedNode<L> temp;
-        DoubleLinkedNode<L> replacedNode, tempPrev, tempNext;
-        temp = head;
+
+    public void update(L primerElemento, L finalElemento) {
+        DoubleLinkedNode<L> temp = head;
 
         for (int i = 0; i < size; i++) {
-            if (temp.getElement().equals(initialElem)) {
-                tempPrev = temp.getPrev();
-                tempNext = temp.getNext();
-
-                replacedNode = new DoubleLinkedNode<>(replacedElem);
-                tempPrev.setNext(replacedNode);
-                tempNext.setPrev(replacedNode);
-                replacedNode.setPrev(tempPrev);
-                replacedNode.setNext(tempNext);
-
-                temp.setPrev(null);
-                temp.setNext(null);
+            if (temp.getElement().equals(primerElemento)) {
+                temp.setElement(finalElemento);
                 break;
             } else {
                 temp = temp.getNext();
@@ -89,8 +76,8 @@ public class DoubleLinkedList<L> {
         }
     }
 
-    //permite eliminar el primer nodo de la lista
-    private void DeleteFrist() {
+
+    private void frontDelete() {
         DoubleLinkedNode<L> temp = head;
         head = head.getNext();
         temp.setNext(null);
@@ -98,8 +85,8 @@ public class DoubleLinkedList<L> {
         size--;
     }
 
-    //permite eliminar el ultimo nodo de la lista 
-    private void DeleteFinal() {
+
+    private void rearDelete() {
         DoubleLinkedNode<L> temp = tail;
         tail = tail.getPrev();
         temp.setPrev(null);
@@ -107,32 +94,32 @@ public class DoubleLinkedList<L> {
         size--;
     }
 
-    //elimina un solo nodo
-    private void deleteUniqueElement(L element) {
-        if (head.getElement().equals(element)) {
+
+    private void deleteUniqueElement(L elemento) {
+        if (head.getElemento().equals(elemento)) {
             head = null;
             tail = head;
             size--;
         }
     }
 
-    //permite elimar un elemnto de una lista de size 2
-    private void DeleteOnly2(L element) {
-        if (head.getElement().equals(element)) {
-            DeleteFrist();
-        } else if (tail.getElement().equals(element)) {
-            DeleteFinal();
+
+    private void deleteOnTowElements(L elemento) {
+        if (head.getElemento().equals(elemento)) {
+            frontDelete();
+        } else if (tail.getElement().equals(elemento)) {
+            rearDelete();
         }
         size--;
     }
 
-    //permite eliminar los elementos en cualquier parte de la lista
-    private void DeleteWherever(L element) {
+
+    private void deleteOnMiddle(L elemento) {
         DoubleLinkedNode<L> temp;
         DoubleLinkedNode<L> tempNext, tempPrev;
         temp = head;
         for (int i = 0; i < size; i++) {
-            if (temp.getElement().equals(element)) {
+            if (temp.getElement().equals(elemento)) {
                 tempPrev = temp.getPrev();
                 tempNext = temp.getNext();
                 tempNext.setPrev(tempPrev);
@@ -147,25 +134,24 @@ public class DoubleLinkedList<L> {
         size--;
     }
 
-    //elimina cualquier nodo,dependiendo del size
-    public void Delete(L element) {
+
+    public void delete(L elemento) {
         if (!isEmpty()) {
-            if (tail.getElement().equals(element)) {
-                DeleteFinal();
-            } else if (head.getElement().equals(element)) {
-                DeleteFrist();
+            if (tail.getElemento().equals(elemento)) {
+                rearDelete();
+            } else if (head.getElemento().equals(elemento)) {
+                frontDelete();
             } else if (size == 1) {
-                deleteUniqueElement(element);
+                deleteUniqueElement(elemento);
             } else if (size == 2) {
-                DeleteOnly2(element);
+                deleteOnTowElements(elemento);
             } else if (size >= 3) {
-                DeleteWherever(element);
+                deleteOnMiddle(elemento);
             }
         }
     }
 
-    //permite conocer los elementos del nodo desde el primero hasta el ultimo
-    @Override
+
     public String toString() {
         String msg = "";
         DoubleLinkedNode<L> temp = head;
@@ -176,7 +162,6 @@ public class DoubleLinkedList<L> {
         return msg;
     }
 
-    //permite conocer los elementos del nodo desde el ultimo hasta el primero
     public String toStringReverse() {
         String msg = "";
         DoubleLinkedNode<L> temp = tail;
